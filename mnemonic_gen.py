@@ -1,10 +1,20 @@
+#!/usr/bin/python3
 import secrets
 import binascii
+import sys
 from hashlib import sha256 , pbkdf2_hmac
 
 def main():
-	dict_path = "./BIP39_Wordlists/BIP39_EN"
-	nbits = 256
+	if len(sys.argv) > 2:
+		nbits = int(sys.argv[1])
+		dict_path = sys.argv[2]
+	elif len(sys.argv) > 1:
+		dict_path = "./BIP39_Wordlists/BIP39_EN"
+		nbits = int(sys.argv[1])
+	else:
+		dict_path = "./BIP39_Wordlists/BIP39_EN"
+		nbits = 256
+
 	entropy = secrets.randbits(nbits)
 	checksum_bin = checksum(entropy, nbits)
 	mnemonic = get_mnemonic(checksum_bin, get_dic(dict_path))
