@@ -4,15 +4,8 @@ import binascii
 import sys
 
 from hashlib import sha256 , pbkdf2_hmac
-
+"""
 def main():
-	entropy_temp = 0
-	if len(sys.argv) > 3:
-		if int(sys.argv[1]) % 32 != 0:
-			return ("Error")
-		nbits = int(sys.argv[1])
-		dict_path = sys.argv[2]
-		entropy_temp = int(sys.argv[3])
 	if len(sys.argv) > 2:
 		if int(sys.argv[1]) % 32 != 0:
 			return ("Error")
@@ -26,11 +19,8 @@ def main():
 	else:
 		dict_path = "./BIP39_Wordlists/BIP39_EN"
 		nbits = 256
-	
-	if entropy_temp != 0:
-		entropy = entropy_temp
-	else:
-		entropy = secrets.randbits(nbits)
+
+	entropy = secrets.randbits(nbits)
 	checksum_bin = checksum(entropy, nbits)
 	mnemonic = get_mnemonic(checksum_bin, get_dic(dict_path))
 	seed = mnemonic_to_seed(mnemonic, "")
@@ -38,7 +28,7 @@ def main():
 	print("Checksum : ", checksum_bin, "\nChecksum Token : " , checksum_bin.replace(resize_bin(bin(entropy)[2:], nbits), ''), "\n\n")
 	print("Mnemonic :" , mnemonic,"\n")
 	print("Seed : ", seed)
-
+"""
 
 def resize_bin(bin, nbits):
 	if nbits - len(bin) > 0:
@@ -49,10 +39,9 @@ def resize_bin(bin, nbits):
 
 def checksum(entropy, nbits):
 	entropy_hex = hex(entropy)[2:]
-	print(entropy_hex)
 	entropy_bin = bin(entropy)[2:]
 	entropy_bin = resize_bin(entropy_bin, nbits)
-	fingerprint_hash = sha256(binascii.a2b_hex(resize_bin(entropy_hex, int(nbits/4)))).hexdigest()
+	fingerprint_hash = sha256(bytearray.fromhex(entropy_hex)).hexdigest()
 	fingerprint = bin(int(fingerprint_hash, 16))[2:]
 	fingerprint = resize_bin(fingerprint, 256)
 	checksum = str(entropy_bin) + fingerprint[:int(nbits/32)]
@@ -89,4 +78,4 @@ def mnemonic_to_seed(mnemonic, passphrase):
 	seed = pbkdf2_hmac("SHA512", bytes(mnemonic_phrase.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
 	return (seed)
 
-main()
+#main()
