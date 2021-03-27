@@ -8,7 +8,7 @@ class app:
 	def  __init__(self):
 		self.master = Tk()
 
-		self.dict_path = "./BIP39_Wordlists/BIP39_EN"
+		self.dict_path = "../BIP39_Wordlists/BIP39_EN"
 		self.nbits = IntVar(self.master, 128)
 		self.entropy_intvar = IntVar(self.master, 150) 
 		self.entropy_binvar = StringVar(self.master)

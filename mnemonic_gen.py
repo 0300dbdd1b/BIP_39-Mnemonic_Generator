@@ -2,17 +2,22 @@
 import secrets
 import binascii
 import sys
+import hmac
 
-from hashlib import sha256 , pbkdf2_hmac
+from bitcoin import *
+from hashlib import sha256 , pbkdf2_hmac , sha512
 
 def main():
-	entropy_temp = 0
+	entropy_temp = -1
 	if len(sys.argv) > 3:
 		if int(sys.argv[1]) % 32 != 0:
 			return ("Error")
 		nbits = int(sys.argv[1])
 		dict_path = sys.argv[2]
-		entropy_temp = int(sys.argv[3])
+		if ( int(sys.argv[3]) <= 115792089237316195423570985008687907853269984665640564039457584007913129639935):
+			entropy_temp = int(sys.argv[3])
+		else:
+			entropy_temp = -1
 	if len(sys.argv) > 2:
 		if int(sys.argv[1]) % 32 != 0:
 			return ("Error")
@@ -27,18 +32,21 @@ def main():
 		dict_path = "./BIP39_Wordlists/BIP39_EN"
 		nbits = 256
 	
-	if entropy_temp != 0:
+	if entropy_temp != -1:
 		entropy = entropy_temp
 	else:
 		entropy = secrets.randbits(nbits)
 	checksum_bin = checksum(entropy, nbits)
 	mnemonic = get_mnemonic(checksum_bin, get_dic(dict_path))
 	seed = mnemonic_to_seed(mnemonic, "")
-	print("Entropy : " , entropy , "\nEntropy Bin : ", resize_bin(bin(entropy)[2:], nbits), "\nnbits : ", nbits , "\n\n")
-	print("Checksum : ", checksum_bin, "\nChecksum Token : " , checksum_bin.replace(resize_bin(bin(entropy)[2:], nbits), ''), "\n\n")
+	master_key = get_bip32masterkey(seed)
+	print("Entropy : " , entropy , "\nnnbits : ", nbits , "\nEntropy Bin : ", resize_bin(bin(entropy)[2:], nbits), "\n")
+	print("Checksum Token : " , checksum_bin.replace(resize_bin(bin(entropy)[2:], nbits), ''), "\n\n")
 	print("Mnemonic :" , mnemonic,"\n")
-	print("Seed : ", seed)
-
+	print("Seed : ", seed, "\n")
+	print("Master Extended Private Key :\nPrivate Key :", master_key[:64], "\nchain code  :" , master_key[64:128], "\n")
+	print("public key : ", get_xpub(master_key[:64], True))
+	get_addr(get_xpub(master_key[:64], True), "00")
 
 def resize_bin(bin, nbits):
 	if nbits - len(bin) > 0:
@@ -49,7 +57,6 @@ def resize_bin(bin, nbits):
 
 def checksum(entropy, nbits):
 	entropy_hex = hex(entropy)[2:]
-	print(entropy_hex)
 	entropy_bin = bin(entropy)[2:]
 	entropy_bin = resize_bin(entropy_bin, nbits)
 	fingerprint_hash = sha256(binascii.a2b_hex(resize_bin(entropy_hex, int(nbits/4)))).hexdigest()
