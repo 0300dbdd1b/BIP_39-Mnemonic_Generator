@@ -13,8 +13,8 @@
  `````
  ./mnemonic_gen 
  ./mnemonic_gen 128
- ./mnemonic_gen ./BIP_39_Wordlists/BIP39_FR
- ./mnemonic_gen ./BIP_39_Wordlists/BIP39_FR 14235
+ ./mnemonic_gen 160 ./BIP_39_Wordlists/BIP39_FR
+ ./mnemonic_gen 256 ./BIP_39_Wordlists/BIP39_FR 14235
  `````
 
 
