@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+
+### This file contain all the functions to interact from a mnemonic seed to the BTC Protocol
+
 import hmac
 import binascii
 import ecdsa

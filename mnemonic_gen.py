@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+
+### This file contain all the function to generate a BIP39 Mnemonic Seed
 import secrets
 import binascii
 import sys
