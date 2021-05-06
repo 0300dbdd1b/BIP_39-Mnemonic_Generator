@@ -40,7 +40,6 @@ def main():
 	checksum_bin = checksum(entropy, nbits)
 	mnemonic = get_mnemonic(checksum_bin, get_dic(dict_path))
 	seed = mnemonic_to_seed(mnemonic, "")
-	master_key = get_bip32masterkey(seed)
 	print("Entropy : " , entropy , "\nnnbits : ", nbits , "\nEntropy Bin : ", resize_bin(bin(entropy)[2:], nbits), "\n")
 	print("Checksum Token : " , checksum_bin.replace(resize_bin(bin(entropy)[2:], nbits), ''), "\n\n")
 	print("Mnemonic :" , mnemonic,"\n")
