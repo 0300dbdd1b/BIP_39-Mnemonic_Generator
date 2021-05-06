@@ -46,9 +46,7 @@ def main():
 	print("Checksum Token : " , checksum_bin.replace(resize_bin(bin(entropy)[2:], nbits), ''), "\n\n")
 	print("Mnemonic :" , mnemonic,"\n")
 	print("Seed : ", seed, "\n")
-	print("Master Extended Private Key :\nPrivate Key :", master_key[:64], "\nchain code  :" , master_key[64:128], "\n")
-	print("public key : ", get_xpub(master_key[:64], True))
-	get_addr(get_xpub(master_key[:64], True), "00")
+
 
 def resize_bin(bin, nbits):
 	if nbits - len(bin) > 0:
