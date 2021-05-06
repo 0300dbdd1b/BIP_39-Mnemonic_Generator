@@ -20,7 +20,7 @@
 
 ### Requierements :
 
-- base58  : pip onstall base58
+- base58  : pip install base58
 - ecdsa   : pip install ecdsa
 - secrets : pip install secrets
 
