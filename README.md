@@ -31,7 +31,7 @@
 ### Updates :
 
 ````
-[ ] : GUI 
+- [ ] : GUI 
 ````
 
 ### Usefull links :
