@@ -30,9 +30,8 @@
 
 ### Updates :
 
-````
 - [ ] : GUI 
-````
+
 
 ### Usefull links :
 
