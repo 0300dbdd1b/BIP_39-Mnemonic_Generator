@@ -7,8 +7,12 @@
 ```
  ./mnemonic_gen [nbits] [dict_path] [entropy]
 ```
- nbits & dict_path are both optional default nbits is 256 , default dict is BIP39_EN            /!\ (nbits modulo 32 = 0 & 128 < nbits < 256)
- entropy is also optional and should only be used when nbits and dict_path are manually set , default entropy is an cryptographically secure pseudorandom number.
+ nbits & dict_path are both optional  
+ default nbits is 256   /!\ (nbits modulo 32 = 0 & 128 < nbits < 256)  
+ default dict is BIP39_EN           
+ entropy is also optional and should only be used when nbits and dict_path are manually set.  
+ default entropy is an cryptographically secure pseudorandom number.  
+ 
  ##### Examples :
  `````
  ./mnemonic_gen 
