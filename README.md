@@ -24,9 +24,10 @@
 
 ### Requierements :
 
-- base58  : pip install base58
-- ecdsa   : pip install ecdsa
-- secrets : pip install secrets
+- python3.x
+- base58  : pip3 install base58
+- ecdsa   : pip3 install ecdsa
+- secrets : pip3 install secrets
 
 
 ### Status :
