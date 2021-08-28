@@ -34,11 +34,11 @@
 
 
 ### Status :
-[IN PROGRESS] - working on GUI
+[IN PROGRESS] - working on GUI : 55%
 
 ### Updates :
 
-- [ ] : GUI 
+- [X] : GUI -> check branches tree
 
 
 ### Usefull links :
