@@ -2,6 +2,9 @@
 
 "The aim of this repo is to show all the steps to get from a random (or not) number to a BIP_39 mnemonic passphrase/seed"
 
+
+/!\ There is a GUI version in the branch section
+
 ##  Use :
 
 ```
@@ -49,6 +52,3 @@
 - [Extended_Keys](https://learnmeabitcoin.com/technical/extended-keys)
 
 Thanks to https://learnmeabitcoin.com/ for all the informations needed to understand the Bitcoin Protocol.
-
-
-You can buy me a beer here (BTC) : 1BeergKrCLBnngHGwX1SgesSDWfbry5Wjh
