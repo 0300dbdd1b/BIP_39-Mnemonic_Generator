@@ -6,7 +6,7 @@ import binascii
 import sys
 import hmac
 
-from hashlib import sha256 , pbkdf2_hmac , sha512
+from hashlib import sha256 , pbkdf2_hmac
 
 def main():
 	entropy_temp = -1
