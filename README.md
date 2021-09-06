@@ -1,9 +1,8 @@
 # BIP_39-Mnemonic_Generator
 
 "The aim of this repo is to show all the steps to get from a random (or not) number to a BIP_39 mnemonic passphrase/seed"
-/
-/
-
+</br>
+</br>
 /!\ There is a GUI version in the branch section ( edit(06/09/2021): GUI not working at all, front-end gives me headache)
 
 ##  Use :
