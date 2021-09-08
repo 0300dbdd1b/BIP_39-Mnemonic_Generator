@@ -60,8 +60,8 @@ def checksum(entropy, nbits):
 	fingerprint_hash = sha256(binascii.a2b_hex(resize_bin(entropy_hex, int(nbits/4)))).hexdigest()
 	fingerprint = bin(int(fingerprint_hash, 16))[2:]
 	fingerprint = resize_bin(fingerprint, 256)
-	checksum = str(entropy_bin) + fingerprint[:int(nbits/32)]
-	return (checksum)
+	fingerprint = fingerprint[:int(nbits/32)]
+	return (fingerprint)
 
 def get_dic(dict_path):
 	wordlist = {}
@@ -94,4 +94,3 @@ def mnemonic_to_seed(mnemonic, passphrase):
 	seed = pbkdf2_hmac("SHA512", bytes(mnemonic_phrase.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
 	return (seed)
 
-main()
