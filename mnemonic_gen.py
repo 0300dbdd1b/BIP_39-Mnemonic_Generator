@@ -94,4 +94,6 @@ def mnemonic_to_seed(mnemonic, passphrase):
 	seed = pbkdf2_hmac("SHA512", bytes(mnemonic_phrase.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
 	return (seed)
 
+def	key_derivation(seed, index, type):
+	Mextended_xpriv = seed[0:32]
 main()
