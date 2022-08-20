@@ -33,14 +33,6 @@
 - secrets : pip3 install secrets
 
 
-### Status :
-[IN PROGRESS] - working on GUI 
-
-### Updates :
-
-- [X] : GUI -> check branches tree
-
-
 ### Usefull links :
 
 - [Checksum](https://learnmeabitcoin.com/technical/checksum)
