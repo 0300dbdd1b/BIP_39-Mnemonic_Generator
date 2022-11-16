@@ -11,7 +11,7 @@
  ./mnemonic_gen [nbits] [dict_path] [entropy]
 ```
  nbits & dict_path are both optional  
- default nbits is 256   /!\ (nbits modulo 32 = 0 & 128 < nbits < 256)  
+ default nbits is 128   /!\ (nbits modulo 32 should be 0)  
  default dict is BIP39_EN           
  entropy is also optional and should only be used when nbits and dict_path are manually set.  
  default entropy is an cryptographically secure pseudorandom number provided by the secrets library.
