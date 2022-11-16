@@ -4,66 +4,28 @@
 import secrets
 import binascii
 import sys
-import hmac
 
 from hashlib import sha256 , pbkdf2_hmac
 
-def main():
-	entropy_temp = -1
-	if len(sys.argv) > 3:
-		if int(sys.argv[1]) % 32 != 0:
-			return ("Error")
-		nbits = int(sys.argv[1])
-		dict_path = sys.argv[2]
-		if ( int(sys.argv[3]) <= 115792089237316195423570985008687907853269984665640564039457584007913129639935):
-			entropy_temp = int(sys.argv[3])
-		else:
-			entropy_temp = -1
-	if len(sys.argv) > 2:
-		if int(sys.argv[1]) % 32 != 0:
-			return ("Error")
-		nbits = int(sys.argv[1])
-		dict_path = sys.argv[2]
-	elif len(sys.argv) > 1:
-		if int(sys.argv[1]) % 32 != 0:
-			return ("Error")
-		dict_path = "./BIP39_Wordlists/BIP39_EN"
-		nbits = int(sys.argv[1])
-	else:
-		dict_path = "./BIP39_Wordlists/BIP39_EN"
-		nbits = 256
-	
-	if entropy_temp != -1:
-		entropy = entropy_temp
-	else:
-		entropy = secrets.randbits(nbits)
-	checksum_bin = checksum(entropy, nbits)
-	mnemonic = get_mnemonic(checksum_bin, get_dic(dict_path))
-	seed = mnemonic_to_seed(mnemonic, "")
-	print("Entropy : " , entropy , "\nnnbits : ", nbits , "\nEntropy Bin : ", resize_bin(bin(entropy)[2:], nbits), "\n")
-	print("Checksum Token : " , checksum_bin.replace(resize_bin(bin(entropy)[2:], nbits), ''), "\n\n")
-	print("Mnemonic :" , mnemonic,"\n")
-	print("Seed : ", seed, "\n")
+def resize(str):
+	l = len(str)
+	while (l % 32 != 0):
+		str = "0" + str
+		l += 1
+	return (str)
 
 
-def resize_bin(bin, nbits):
-	if nbits - len(bin) > 0:
-		for i in range(0, nbits - len(bin)):
-			bin = "0" + bin
-	return (bin)
-
-
-def checksum(entropy, nbits):
+# Returns the checksum from the given entropy (entropy is an integer)
+def checksum(entropy):
+	entropy_len = len(resize(bin(entropy)[2:]))
 	entropy_hex = hex(entropy)[2:]
-	entropy_bin = bin(entropy)[2:]
-	entropy_bin = resize_bin(entropy_bin, nbits)
-	fingerprint_hash = sha256(binascii.a2b_hex(resize_bin(entropy_hex, int(nbits/4)))).hexdigest()
-	fingerprint = bin(int(fingerprint_hash, 16))[2:]
-	fingerprint = resize_bin(fingerprint, 256)
-	checksum = str(entropy_bin) + fingerprint[:int(nbits/32)]
+	entropy_hex = entropy_hex if len(entropy_hex) % 2 == 0 else "0" + entropy_hex
+	checksum = resize(bin(int(sha256(binascii.a2b_hex(entropy_hex)).hexdigest(), 16))[2:])[:int(entropy_len/32)]
 	return (checksum)
 
-def get_dic(dict_path):
+
+# Get the BIP39 Wordlist dict from the specified filepath
+def get_dic(dict_path="./BIP39_Wordlists/BIP39_EN"):
 	wordlist = {}
 	with open(dict_path) as dict:
 		key = 0
@@ -73,12 +35,15 @@ def get_dic(dict_path):
 			key += 1
 		return (wordlist)
 
-def get_mnemonic(checksum, dict):
+# Get the mnemonic phrase from the given entropy & dict (entropy is an integer)
+def get_mnemonic(entropy, dict_path="./BIP39_Wordlists/BIP39_EN"):
 	mnemonic = {}
 	index = 1
 	i = 0
-	while i < len(checksum):
-		word = int(checksum[i:i+11], 2)
+	checksumed_entropy = resize(bin(entropy)[2:]) + checksum(entropy)
+	dict = get_dic(dict_path)
+	while i < len(checksumed_entropy):
+		word = int(checksumed_entropy[i:i+11], 2)
 		word = dict.get(word)
 		(index, word) = index , word[:-1]
 		mnemonic[int(index)] = word
@@ -86,7 +51,9 @@ def get_mnemonic(checksum, dict):
 		i += 11
 	return (mnemonic)
 
-def mnemonic_to_seed(mnemonic, passphrase):
+
+# Transform a mnemonic phrase & passphrase to a BIP39 seed
+def mnemonic_to_seed(mnemonic, passphrase=""):
 	mnemonic_phrase = ""
 	for key in mnemonic:
 		mnemonic_phrase = mnemonic_phrase + mnemonic[key] + " "
@@ -94,6 +61,33 @@ def mnemonic_to_seed(mnemonic, passphrase):
 	seed = pbkdf2_hmac("SHA512", bytes(mnemonic_phrase.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
 	return (seed)
 
-def	key_derivation(seed, index, type):
-	Mextended_xpriv = seed[0:32]
-main()
+
+
+
+# Generates a cryptographically secure pseudorandom number of size nbits and returns its mnemonic phrase representation
+def get_bip39_mnemonic(nbits=128, dict_path="./BIP39_Wordlists/BIP39_EN"):
+	if nbits % 32 != 0:
+		return ("Error : the entropy size must be a multiple of 32")
+	entropy = secrets.randbits(nbits)
+	print(resize(bin(entropy)[2:]))
+	mnemonic = get_mnemonic(entropy, dict_path)
+	return mnemonic
+
+	
+
+
+# Main
+
+if __name__ == "__main__":
+	if len(sys.argv) > 3:
+		mnemonic = get_mnemonic(int(sys.argv[3]), str(sys.argv[2]))
+	elif len(sys.argv) > 2:
+		mnemonic = get_bip39_mnemonic(int(sys.argv[1]), str(sys.argv[2]))
+	elif len(sys.argv) > 1:
+		mnemonic = get_bip39_mnemonic(int(sys.argv[1]))
+	else:
+		mnemonic = get_bip39_mnemonic()
+	print(mnemonic)
+	if type(mnemonic) == "string":
+		seed = mnemonic_to_seed(mnemonic)
+		print("seed: ", seed)
