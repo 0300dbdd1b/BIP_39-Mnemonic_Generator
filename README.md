@@ -35,8 +35,7 @@
 ### Requierements :
 
 - python3.x
-- base58  : ```pip3 install base58```
-- ecdsa   : ```pip3 install ecdsa```
+- binascii : ``` pip3 install binascii```
 - secrets : ```pip3 install secrets```
 
 
