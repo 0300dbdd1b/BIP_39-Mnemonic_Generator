@@ -16,12 +16,12 @@
  entropy is also optional and should only be used when nbits and dict_path are manually set.  
  default entropy is an cryptographically secure pseudorandom number provided by the secrets library.
  
- nbits    | nwords
- 128      | 12
- 160      | 15
- 192      | 18
- 224      | 21
- 256      | 24
+ nbits    | nwords\
+ 128      | 12\
+ 160      | 15\
+ 192      | 18\
+ 224      | 21\
+ 256      | 24\
  
  ##### Examples :
  `````
