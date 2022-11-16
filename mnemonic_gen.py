@@ -69,7 +69,7 @@ def get_bip39_mnemonic(nbits=128, dict_path="./BIP39_Wordlists/BIP39_EN"):
 	if nbits % 32 != 0:
 		return ("Error : the entropy size must be a multiple of 32")
 	entropy = secrets.randbits(nbits)
-	print(resize(bin(entropy)[2:]))
+	#print(resize(bin(entropy)[2:]))
 	mnemonic = get_mnemonic(entropy, dict_path)
 	return mnemonic
 
@@ -88,6 +88,6 @@ if __name__ == "__main__":
 	else:
 		mnemonic = get_bip39_mnemonic()
 	print(mnemonic)
-	if type(mnemonic) == "string":
+	if isinstance(mnemonic, dict):
 		seed = mnemonic_to_seed(mnemonic)
 		print("seed: ", seed)
