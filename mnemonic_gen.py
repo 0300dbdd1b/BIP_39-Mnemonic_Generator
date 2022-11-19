@@ -6,7 +6,7 @@ import binascii
 import sys
 
 from hashlib import sha256 , pbkdf2_hmac
-
+DEFAULT_DICT_PATH = "./BIP39_Wordlists/BIP39_EN"
 def resize(str):
 	l = len(str)
 	while (l % 32 != 0):
@@ -33,7 +33,7 @@ def checksum(entropy):
 
 
 # Get the BIP39 Wordlist dict from the specified filepath
-def get_dic(dict_path="./BIP39_Wordlists/BIP39_EN"):
+def get_dic(dict_path=DEFAULT_DICT_PATH):
 	wordlist = {}
 	with open(dict_path) as dict:
 		key = 0
@@ -44,7 +44,7 @@ def get_dic(dict_path="./BIP39_Wordlists/BIP39_EN"):
 		return (wordlist)
 
 # Get the mnemonic phrase from the given entropy & dict (entropy is an integer)
-def get_mnemonic(entropy, dict_path="./BIP39_Wordlists/BIP39_EN"):
+def get_mnemonic(entropy, dict_path=DEFAULT_DICT_PATH):
 	mnemonic = {}
 	index = 1
 	i = 0
@@ -71,7 +71,7 @@ def mnemonic_to_seed(mnemonic_phrase, passphrase=""):
 
 
 # Generates a cryptographically secure pseudorandom number of size nbits and returns its mnemonic phrase representation
-def get_bip39_mnemonic(nbits=128, dict_path="./BIP39_Wordlists/BIP39_EN"):
+def get_bip39_mnemonic(nbits=128, dict_path=DEFAULT_DICT_PATH):
 	if nbits % 32 != 0:
 		return ("Error : the entropy size must be a multiple of 32")
 	entropy = secrets.randbits(nbits)
@@ -94,6 +94,6 @@ if __name__ == "__main__":
 	else:
 		mnemonic = get_bip39_mnemonic()
 	print(mnemonic)
-	if isinstance(mnemonic, dict):
+	if mnemonic.find("Error") == -1:
 		seed = mnemonic_to_seed(mnemonic)
 		print("seed: ", seed)
