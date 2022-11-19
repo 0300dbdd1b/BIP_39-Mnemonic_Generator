@@ -63,7 +63,6 @@ def get_mnemonic(entropy, dict_path=DEFAULT_DICT_PATH):
 # Transform a mnemonic phrase & passphrase to a BIP39 seed
 def mnemonic_to_seed(mnemonic_phrase, passphrase=""):
 	mnemonic = mnemonic_phrase + passphrase
-	print(mnemonic)
 	seed = pbkdf2_hmac("SHA512", bytes(mnemonic.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
 	return (seed)
 
@@ -94,6 +93,6 @@ if __name__ == "__main__":
 	else:
 		mnemonic = get_bip39_mnemonic()
 	print(mnemonic)
-	if mnemonic.find("Error") == -1:
+	if mnemonic.find("Error :") == -1:
 		seed = mnemonic_to_seed(mnemonic)
 		print("seed: ", seed)
