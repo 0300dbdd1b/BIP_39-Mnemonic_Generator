@@ -14,7 +14,15 @@ def resize(str):
 		l += 1
 	return (str)
 
+def dict_to_str(dict):
+	str = ""
+	for key in dict:
+		str = str + dict[key] + " "
+	return (str[:-1])
 
+def str_to_dict(str):
+	return(str.split(" "))
+	
 # Returns the checksum from the given entropy (entropy is an integer)
 def checksum(entropy):
 	entropy_len = len(resize(bin(entropy)[2:]))
@@ -49,16 +57,14 @@ def get_mnemonic(entropy, dict_path="./BIP39_Wordlists/BIP39_EN"):
 		mnemonic[int(index)] = word
 		index += 1
 		i += 11
-	return (mnemonic)
+	return (dict_to_str(mnemonic))
 
 
 # Transform a mnemonic phrase & passphrase to a BIP39 seed
-def mnemonic_to_seed(mnemonic, passphrase=""):
-	mnemonic_phrase = ""
-	for key in mnemonic:
-		mnemonic_phrase = mnemonic_phrase + mnemonic[key] + " "
-	mnemonic_phrase = mnemonic_phrase[:-1] + passphrase
-	seed = pbkdf2_hmac("SHA512", bytes(mnemonic_phrase.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
+def mnemonic_to_seed(mnemonic_phrase, passphrase=""):
+	mnemonic = mnemonic_phrase + passphrase
+	print(mnemonic)
+	seed = pbkdf2_hmac("SHA512", bytes(mnemonic.encode()), bytes(("mnemonic" + passphrase).encode()), 2048).hex()
 	return (seed)
 
 
